@@ -29,22 +29,22 @@ jobs:
     - name: Test the project
       run: dotnet test
     
-    - name: Publish Artifact for Windows
-      if: success() && runner.os == 'Windows'
-      run: dotnet publish -c Release -o ./publish-win
-      working-directory: ./
+    # - name: Publish Artifact for Windows
+    #   if: success() && runner.os == 'Windows'
+    #   run: dotnet publish -c Release -o ./publish-win
+    #   working-directory: ./
 
     - name: Publish Artifact on Mac
       if: success() && runner.os == 'macos'
-      run: dotnet publish -c Release -o ./publish-mac --self-contained -r osx-x64
+      run: dotnet publish -c Release -o ./publish-mac --self-contained -r osx-x64 /p:PublishSingleFile=true 
       working-directory: ./
     
-    - name: Upload Artifact Windows
-      if: success()
-      uses: actions/upload-artifact@v2
-      with:
-        name: avalonia-app-win
-        path: ./publish-win
+    # - name: Upload Artifact Windows
+    #   if: success()
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: avalonia-app-win
+    #     path: ./publish-win
     
     - name: Upload Artifact Mac
       if: success()

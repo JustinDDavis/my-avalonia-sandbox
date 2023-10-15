@@ -43,7 +43,7 @@ jobs:
         echo "${{ secrets.MACOS_CERTIFICATE }}" | base64 --decode > certificate.p12
         security import certificate.p12 -k build.keychain -P "${{ secrets.MACOS_CERTIFICATE_PWD}}" -T /usr/bin/codesign
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.KEYCHAIN_PASSWORD}}" build.keychain
-        xcrun notarytool store-credentials "AC_PASSWORD" --apple-id "${{ secrets.APPLE_ID }}" --team-id "${{ env.$TEAM_ID }}" --password "${{ secrets.NOTARY_TOOL_PASSWORD }}"
+        xcrun notarytool store-credentials "AC_PASSWORD" --apple-id "${{ secrets.APPLE_ID }}" --team-id "${{ secrets.TEAM_ID }}" --password "${{ secrets.NOTARY_TOOL_PASSWORD }}"
 
     - name: Publish Artifact on Mac
       if: success() && runner.os == 'macos'
@@ -56,10 +56,10 @@ jobs:
           if [ -f "$fname" ]
           then
               echo "[INFO] Signing $fname"
-              codesign --force --timestamp --options=runtime --entitlements MyApp.entitlements --sign "${{ env.SIGNING_IDENTITY }}" "$fname"
+              codesign --force --timestamp --options=runtime --entitlements MyApp.entitlements --sign "${{ secrets.SIGNING_IDENTITY }}" "$fname"
           fi
         done
-        codesign --force --timestamp --options=runtime --entitlements MyApp.entitlements --sign "${{ env.SIGNING_IDENTITY }}" "$RUNNER_TEMP/MyApp.app"
+        codesign --force --timestamp --options=runtime --entitlements MyApp.entitlements --sign "${{ secrets.SIGNING_IDENTITY }}" "$RUNNER_TEMP/MyApp.app"
     
     # - name: Upload Artifact Windows
     #   if: success()

@@ -31,13 +31,15 @@ jobs:
     
     - name: Publish Artifact
       if: success()
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          dotnet publish -c Release -o ./publish
-        else
-          dotnet publish -c Release -o ./publish --self-contained -r osx-x64
-        fi
-      working-directory: ./
+      steps:
+        - name: Publish Artifact on Windows
+          if: runner.os == 'Windows'
+          run: dotnet publish -c Release -o ./publish
+          working-directory: ./
+        - name: Publish Artifact on Mac
+          if: runner.os != 'Windows'
+          run: dotnet publish -c Release -o ./publish --self-contained -r osx-x64
+          working-directory: ./
     
     - name: Upload Artifact
       if: success()

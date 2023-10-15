@@ -35,7 +35,7 @@ jobs:
         if [ "$RUNNER_OS" == "Windows" ]; then
           dotnet publish -c Release -o ./publish
         else
-          dotnet publish -c Release -o ./publish --self-contained -r osx-64
+          dotnet publish -c Release -o ./publish --self-contained -r osx-x64
         fi
       working-directory: ./
     
